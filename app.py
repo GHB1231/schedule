@@ -34,14 +34,7 @@ from config import EVENT_TYPE_COLORS
 
 # ============ 简单鉴权 ============
 
-# 密码存在数据库中（首次运行从环境变量或默认密码读取）
-def _get_password():
-    pwd = db_get_pref("login_password")
-    if not pwd:
-        pwd = os.environ.get("APP_PASSWORD", "schedule123")
-        db_set_pref("login_password", _hash_pwd(pwd))
-        return pwd
-    return pwd
+APP_PASSWORD = os.environ.get("APP_PASSWORD", "gao123")
 
 
 def _hash_pwd(pwd: str) -> str:
@@ -49,10 +42,8 @@ def _hash_pwd(pwd: str) -> str:
 
 
 def _check_pwd(pwd: str) -> bool:
-    stored = db_get_pref("login_password")
-    if not stored:
-        return True
-    return _hash_pwd(pwd) == stored
+    # 直接用环境变量密码比对，不存数据库
+    return _hash_pwd(pwd) == _hash_pwd(APP_PASSWORD)
 
 
 def login_required(f):
