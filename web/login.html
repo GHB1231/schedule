@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 智能日程安排表</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .login-container {
+            display: flex; align-items: center; justify-content: center;
+            height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .login-card {
+            background: white; border-radius: 16px; padding: 40px;
+            width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;
+        }
+        .login-icon { font-size: 48px; margin-bottom: 16px; }
+        .login-card h2 { font-size: 22px; margin-bottom: 8px; color: #2c3e50; }
+        .login-card p { font-size: 13px; color: #7f8c8d; margin-bottom: 24px; }
+        .login-card input {
+            width: 100%; padding: 12px 16px; border: 2px solid #e1e4e8;
+            border-radius: 8px; font-size: 15px; text-align: center;
+            letter-spacing: 4px; font-family: inherit;
+        }
+        .login-card input:focus { outline: none; border-color: #667eea; }
+        .btn-login {
+            width: 100%; margin-top: 16px; padding: 12px; border: none;
+            border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; font-size: 16px; font-weight: 600; cursor: pointer;
+        }
+        .btn-login:disabled { opacity: 0.6; }
+        .login-error { color: #e74c3c; font-size: 13px; margin-top: 12px; min-height: 20px; }
+        .login-hint { font-size: 11px; color: #95a5a6; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="login-container">
+<div class="login-card">
+    <div class="login-icon">📅</div>
+    <h2>智能日程安排表</h2>
+    <p>手机 + 电脑数据实时同步</p>
+    <form onsubmit="doLogin(event)">
+        <input type="password" id="password" placeholder="请输入访问密码" autofocus>
+        <button type="submit" class="btn-login" id="btnLogin">登录</button>
+    </form>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-hint">默认密码: schedule123</div>
+</div>
+</div>
+<script>
+async function doLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnLogin');
+    const errEl = document.getElementById('loginError');
+    btn.disabled = true; btn.textContent = '登录中...'; errEl.textContent = '';
+    try {
+        const resp = await fetch('/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({password: document.getElementById('password').value}),
+        });
+        const data = await resp.json();
+        if (resp.ok) window.location.href = '/';
+        else errEl.textContent = data.error || '密码错误';
+    } catch (err) {
+        errEl.textContent = '网络错误';
+    } finally {
+        btn.disabled = false; btn.textContent = '登录';
+    }
+}
+</script>
+</body>
+</html>
