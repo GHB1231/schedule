@@ -497,6 +497,74 @@ body {
     background: transparent;
 }
 
+/* ============ 可折叠侧边栏 ============ */
+.toggle-panel-btn {
+    font-size: 18px;
+    padding: 4px 8px;
+    margin-right: 4px;
+}
+
+.side-panel.collapsed {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+.side-panel.collapsed .panel-section {
+    display: none;
+}
+
+/* ============ 响应式：手机布局 ============ */
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 8px 12px;
+    }
+    .brand h1 {
+        font-size: 15px;
+    }
+    .header-stats {
+        font-size: 11px;
+        gap: 8px;
+    }
+    .header-stats .stat-item {
+        display: none;  /* 手机上隐藏统计数字 */
+    }
+
+    .main-container {
+        flex-direction: column;
+    }
+
+    .side-panel {
+        width: 100%;
+        min-width: 100%;
+        max-height: 45vh;
+        order: 2;
+    }
+
+    .side-panel.collapsed {
+        max-height: 0;
+        min-height: 0;
+    }
+
+    .calendar-main {
+        order: 1;
+        padding: 8px;
+        flex: 1;
+        min-height: 300px;
+    }
+
+    .job-list {
+        max-height: 150px;
+    }
+
+    .modal-content {
+        width: 95vw;
+        max-height: 85vh;
+    }
+}
+
 ::-webkit-scrollbar-thumb {
     background: #c4c9d0;
     border-radius: 3px;

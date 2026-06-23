@@ -196,5 +196,33 @@ async function initApp() {
     }
 }
 
+// ============ 侧边栏折叠 ============
+
+function toggleSidePanel() {
+    const panel = document.getElementById('sidePanel');
+    panel.classList.toggle('collapsed');
+    // 折叠后刷新日历大小
+    if (calendar) {
+        setTimeout(() => calendar.updateSize(), 300);
+    }
+}
+
+// 手机屏幕默认折叠
+function autoCollapseOnMobile() {
+    if (window.innerWidth <= 768) {
+        document.getElementById('sidePanel').classList.add('collapsed');
+    }
+}
+
+// ============ 退出登录 ============
+
+async function doLogout() {
+    await fetch('/logout', { method: 'POST' });
+    window.location.href = '/login.html';
+}
+
 // 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', () => {
+    autoCollapseOnMobile();
+    initApp();
+});
