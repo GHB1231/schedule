@@ -1,0 +1,14 @@
+name: auto-extend
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  extend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: extend pythonanywhere
+        run: |
+          curl -s -X POST 'https://www.pythonanywhere.com/api/v0/user/GHB/webapps/GHB.pythonanywhere.com/extend/' -H 'Authorization: Token ${{ secrets.PA_TOKEN }}'
